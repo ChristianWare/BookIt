@@ -7,7 +7,7 @@ const allRooms = (req, res) => {
   });
 };
 
-// Create new room ==> /api/rooms
+// Creete new Room: (Path will be: /api/rooms)
 const newRoom = async (req, res) => {
   try {
     const room = await Room.create(req.body);

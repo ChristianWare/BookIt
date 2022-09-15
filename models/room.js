@@ -5,12 +5,12 @@ const roomSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please enter room name"],
     trim: true,
-    maxLength: [100, "Room can not exceed 100 Characters"],
+    maxLength: [100, "Room name can not exceed 100 characters"],
   },
   pricePerNight: {
     type: Number,
-    required: [true, "Please enter room price per night"],
-    maxLength: [4, "Room can not exceed 4 Characters"],
+    required: [true, "Please enter room price"],
+    maxLength: [4, "Room name can not exceed 4 characters"],
     default: 0.0,
   },
   description: {
@@ -23,7 +23,7 @@ const roomSchema = new mongoose.Schema({
   },
   guestCapacity: {
     type: Number,
-    required: [true, "Please enter room guest capacity"],
+    required: [true, "Please enter guest capacity"],
   },
   numOfBeds: {
     type: Number,
@@ -31,7 +31,7 @@ const roomSchema = new mongoose.Schema({
   },
   internet: {
     type: Boolean,
-    required: false,
+    default: false,
   },
   breakfast: {
     type: Boolean,
@@ -41,7 +41,7 @@ const roomSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  petsAllowed: {
+  petAllowed: {
     type: Boolean,
     default: false,
   },
@@ -57,7 +57,7 @@ const roomSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
-  image: [
+  images: [
     {
       public_id: {
         type: String,
@@ -71,7 +71,7 @@ const roomSchema = new mongoose.Schema({
   ],
   category: {
     type: String,
-    required: [true, "Please enter room category"],
+    required: [true, "Please enter room Category"],
     enum: {
       values: ["King", "Single", "Twins"],
       message: "Please select correct category for room",
@@ -82,7 +82,7 @@ const roomSchema = new mongoose.Schema({
       user: {
         type: mongoose.Schema.ObjectId,
         ref: "User",
-        required: true,
+        required: false,
       },
       name: {
         type: String,
@@ -90,7 +90,7 @@ const roomSchema = new mongoose.Schema({
       },
       rating: {
         type: Number,
-        required: true,
+        requied: true,
       },
       comment: {
         type: String,
@@ -109,6 +109,4 @@ const roomSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.models.Room || mongoose.model("Room", roomSchema);
-
-
+export default mongoose.models.Room || mongoose.model("Room", roomSchema);

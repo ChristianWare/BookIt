@@ -1,6 +1,6 @@
 import Room from "../models/room";
 
-// Create new Room: (Path will be: /api/rooms, Method: GET)
+// Create new Room: (Path: /api/rooms, Method: GET)
 const allRooms = async (req, res) => {
   try {
     const rooms = await Room.find();
@@ -17,7 +17,7 @@ const allRooms = async (req, res) => {
   }
 };
 
-// Create new Room: (Path will be: /api/rooms, Method: POST)
+// Create new Room: (Path: /api/rooms, Method: POST)
 const newRoom = async (req, res) => {
   try {
     // The Following will save the Room data to the Databas:
@@ -34,12 +34,11 @@ const newRoom = async (req, res) => {
   }
 };
 
-// Get Room Details: (Path will be: /api/rooms/:id, Method: GET)
+// Get Room Details: (Path: /api/rooms/:id, Method: GET)
 const getSingleRoom = async (req, res) => {
   try {
-    // The Following will save the Room data to the Databas:
+    // The Following will search the DB for the given ID:
     const room = await Room.findById(req.query.id);
-
     if (!room) {
       return res.status(404).json({
         success: false,
@@ -58,4 +57,34 @@ const getSingleRoom = async (req, res) => {
   }
 };
 
-export { allRooms, newRoom, getSingleRoom };
+// Update Room Details: (Path: /api/rooms/:id, Method: PUT)
+const updateRoom = async (req, res) => {
+  try {
+    // The Following will search the DB for the given ID:
+    let room = await Room.findById(req.query.id);
+    if (!room) {
+      return res.status(404).json({
+        success: false,
+        error: "Room not found with this ID",
+      });
+    }
+
+    room = await Room.findByIdAndUpdate(req.query.id, req.body, {
+      new: true,
+      runValidators: true,
+      useFindAndModify: false,
+    });
+
+    res.status(200).json({
+      success: true,
+      room,
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      error: error.message,
+    });
+  }
+};
+
+export { allRooms, newRoom, getSingleRoom, updateRoom };

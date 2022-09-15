@@ -1,4 +1,5 @@
 import Room from "../models/room";
+import ErrorHandler from "../utils/errorHandler";
 
 // Create new Room: (Path: /api/rooms, Method: GET)
 const allRooms = async (req, res) => {
@@ -20,7 +21,6 @@ const allRooms = async (req, res) => {
 // Create new Room: (Path: /api/rooms, Method: POST)
 const newRoom = async (req, res) => {
   try {
-    // The Following will save the Room data to the Databas:
     const room = await Room.create(req.body);
     res.status(200).json({
       success: true,
@@ -35,15 +35,11 @@ const newRoom = async (req, res) => {
 };
 
 // Get Room Details: (Path: /api/rooms/:id, Method: GET)
-const getSingleRoom = async (req, res) => {
+const getSingleRoom = async (req, res, next) => {
   try {
-    // The Following will search the DB for the given ID:
     const room = await Room.findById(req.query.id);
     if (!room) {
-      return res.status(404).json({
-        success: false,
-        error: "Room not found with this ID",
-      });
+      return next(new ErrorHandler("Room not found with this ID", 404));
     }
     res.status(200).json({
       success: true,
@@ -60,13 +56,9 @@ const getSingleRoom = async (req, res) => {
 // Update Room Details: (Path: /api/rooms/:id, Method: PUT)
 const updateRoom = async (req, res) => {
   try {
-    // The Following will search the DB for the given ID:
     let room = await Room.findById(req.query.id);
     if (!room) {
-      return res.status(404).json({
-        success: false,
-        error: "Room not found with this ID",
-      });
+      return next(new ErrorHandler("Room not found with this ID", 404));
     }
 
     room = await Room.findByIdAndUpdate(req.query.id, req.body, {
@@ -90,13 +82,9 @@ const updateRoom = async (req, res) => {
 // Delete Room : (Path: /api/rooms/:id, Method: DELETE)
 const deleteRoom = async (req, res) => {
   try {
-    // The Following will search the DB for the given ID:
     const room = await Room.findById(req.query.id);
     if (!room) {
-      return res.status(404).json({
-        success: false,
-        error: "Room not found with this ID",
-      });
+      return next(new ErrorHandler("Room not found with this ID", 404));
     }
 
     await room.remove();

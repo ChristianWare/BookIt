@@ -1,15 +1,25 @@
 import Room from "../models/room";
 
-const allRooms = (req, res) => {
-  res.status(200).json({
-    success: true,
-    message: "All Rooms",
-  });
+const allRooms = async (req, res) => {
+  try {
+    const rooms = await Room.find();
+    res.status(200).json({
+      success: true,
+      count: rooms.length,
+      rooms,
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      error: error.message,
+    });
+  }
 };
 
-// Creete new Room: (Path will be: /api/rooms)
+// Create new Room: (Path will be: /api/rooms)
 const newRoom = async (req, res) => {
   try {
+    // The Following will save the Room data to the Databas:
     const room = await Room.create(req.body);
     res.status(200).json({
       success: true,

@@ -3,12 +3,10 @@ import ErrorHandler from "../utils/errorHandler";
 import catchAsyncErrors from "../middlewares/catchAsyncErrors";
 import APIFeatures from "../utils/apiFeatures";
 
-// Create new Room: (Path: /api/rooms, Method: GET)
+// Get all Rooms: (Path: /api/rooms, Method: GET)
 const allRooms = catchAsyncErrors(async (req, res) => {
   const resPerPage = 4;
   const roomsCount = await Room.countDocuments();
-
-
   const apiFeatures = new APIFeatures(Room.find(), req.query)
     .search()
     .filter();

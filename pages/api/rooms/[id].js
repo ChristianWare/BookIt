@@ -18,3 +18,4 @@ handler.put(updateRoom);
 handler.delete(deleteRoom);
 
 export default handler;
+0
